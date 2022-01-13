@@ -82,7 +82,7 @@ const imageIcon = () => (
         setTextColor,
         backgroundColor,
         setBackgroundColor,
-        attributes: { content, title, align, alignment, imgUrl, mediaPosition, hasPadding },
+        attributes: { title, alignment, imgUrl, mediaPosition, hasPadding },
         setAttributes
     } = props;
 
@@ -240,10 +240,14 @@ const imageIcon = () => (
 
 registerBlockType( 'cgb/content-media-block', {
 	apiVersion: 2,
+    parent: [ 'cgb/block-stripe-block' ],
     title: 'Content and Media Block',
     icon: <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" role="img" aria-hidden="true" focusable="false"><path d="M14 6v12h6V6h-6zM4 10h7V8.5H4V10zm0 5.5h7V14H4v1.5z"></path></svg>,
     category: 'common',
     attributes: {
+        title: {
+            type: 'string'
+        },
         content: {
             type: 'array',
             source: 'children',
@@ -288,7 +292,7 @@ registerBlockType( 'cgb/content-media-block', {
     edit: withColors({textColor: 'color', backgroundColor: 'background-color'})(BlockWithColorSettings),
     save: ( props ) => {
         const {
-            attributes: { content, title, backgroundColor, textColor, imgUrl, mediaPosition, hasPadding },
+            attributes: { title, backgroundColor, textColor, imgUrl, mediaPosition, hasPadding },
         } = props;
 
         let classes = classNames('alignfull', (backgroundColor != undefined ? getColorClassName('background-color', backgroundColor) : ''), (textColor != undefined ? getColorClassName('color', textColor) : ''), 'image-position-' + mediaPosition, (hasPadding != false ? "has-padding" : ''));
@@ -299,27 +303,22 @@ registerBlockType( 'cgb/content-media-block', {
         
         return (
             <div { ...blockProps }>
-            <div className="block-contentandimage">
-            <div className="striped-content-media-container-title">
-            <RichText.Content
-                tagName="h1"
-                className="callout-title"
-                value={ title }
-            />
+                <div className="block-contentandimage">
+                <div className="striped-content-media-container-title">
+                    <RichText.Content
+                    tagName="h1"
+                    className="callout-title"
+                    value={title}
+                />
+                 </div>
+                <div className="striped-content-media-container-media">
+                    <img src={imgUrl} />
                 </div>
-            <div className="striped-content-media-container-media">
-                <img src={imgUrl} />
+                <div class="striped-content-media-container-text">
+                <InnerBlocks.Content />
+                </div>
+                </div>
             </div>
-            <div class="striped-content-media-container-text">
-            <RichText.Content
-            tagName="div"
-            className="callout-body"
-            value={ content }
-        />
-        <InnerBlocks.Content />
-        </div>
-        </div>
-        </div>
         );
     },
 } );

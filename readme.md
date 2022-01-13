@@ -1,4 +1,4 @@
-## Striped Content and Media Block
+## Content and Media Block
 
 This is code for a custom content and media block. This allows you to have a two-columned and coloured content and media block.
 
